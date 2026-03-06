@@ -8,18 +8,34 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.27.4'
           channel: 'stable'
           cache: true
-      - run: flutter pub get
-      - run: flutter build ios --release --no-codesign
+
+      - name: Create Flutter project and replace files
+        run: |
+          flutter create --org com.evnpro --project-name evn_pro tmp_project
+          cp -f pubspec.yaml tmp_project/pubspec.yaml
+          cp -f lib/main.dart tmp_project/lib/main.dart
+          cp -rf assets tmp_project/
+          cp -f ios/Runner/Info.plist tmp_project/ios/Runner/Info.plist
+
+      - name: Build iOS
+        working-directory: tmp_project
+        run: |
+          flutter pub get
+          flutter build ios --release --no-codesign
+
       - name: Package IPA
         run: |
           mkdir -p Payload
-          cp -r build/ios/iphoneos/Runner.app Payload/
+          cp -r tmp_project/build/ios/iphoneos/Runner.app Payload/
           zip -r EVNPro.ipa Payload/
+          echo "✅ $(du -sh EVNPro.ipa)"
+
       - uses: actions/upload-artifact@v4
         with:
           name: EVNPro-IPA
