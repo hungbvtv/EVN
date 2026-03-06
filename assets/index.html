@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Điện - EVN Pro</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="theme-color" content="#0b0f1a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+        body.theme-1{--bg-page:#060a18;--bg-card:rgba(15,20,45,.97);--bg-glass:rgba(255,255,255,.04);--bg-glass-hover:rgba(255,255,255,.07);--bg-header:linear-gradient(135deg,rgba(0,80,200,.25),rgba(0,180,255,.12));--bg-controls:rgba(8,12,30,.9);--bg-table-head:rgba(0,100,220,.15);--bg-table-row:rgba(255,255,255,.025);--bg-table-row-alt:rgba(0,100,255,.05);--bg-loss:rgba(255,200,50,.07);--accent:#00b4ff;--accent2:#7c3aed;--accent-glow:rgba(0,180,255,.35);--color-title:#00d4ff;--color-final:#ff4466;--color-grand:#ff3355;--color-text:#c8d8f0;--color-text-dim:rgba(200,216,240,.5);--color-loss-text:#fbbf24;--border-color:rgba(0,180,255,.18);--border-accent:rgba(0,180,255,.65);--gradient-border:linear-gradient(135deg,#00b4ff,#7c3aed,#ff4466,#00b4ff)}
+        body.theme-2{--bg-page:#eef2ff;--bg-card:rgba(255,255,255,.98);--bg-glass:rgba(26,92,184,.05);--bg-glass-hover:rgba(26,92,184,.09);--bg-header:linear-gradient(135deg,rgba(26,92,184,.1),rgba(86,180,224,.06));--bg-controls:rgba(235,242,255,.95);--bg-table-head:rgba(26,92,184,.08);--bg-table-row:rgba(255,255,255,.85);--bg-table-row-alt:rgba(235,245,255,.85);--bg-loss:rgba(255,240,180,.5);--accent:#1a5cb8;--accent2:#2980b9;--accent-glow:rgba(26,92,184,.25);--color-title:#1a5cb8;--color-final:#c0000a;--color-grand:#c0000a;--color-text:#1a2a4a;--color-text-dim:rgba(26,42,74,.5);--color-loss-text:#7a5900;--border-color:rgba(26,92,184,.15);--border-accent:rgba(26,92,184,.65);--gradient-border:linear-gradient(135deg,#1a5cb8,#56b4e0,#2980b9,#1a5cb8)}
+        body.theme-3{--bg-page:#020d05;--bg-card:rgba(4,18,8,.97);--bg-glass:rgba(0,255,100,.04);--bg-glass-hover:rgba(0,255,100,.08);--bg-header:linear-gradient(135deg,rgba(0,180,50,.18),rgba(0,255,100,.07));--bg-controls:rgba(3,14,6,.9);--bg-table-head:rgba(0,200,80,.1);--bg-table-row:rgba(0,255,80,.025);--bg-table-row-alt:rgba(0,200,60,.055);--bg-loss:rgba(0,200,80,.07);--accent:#00e676;--accent2:#69f0ae;--accent-glow:rgba(0,230,118,.35);--color-title:#00e676;--color-final:#69f0ae;--color-grand:#00e676;--color-text:#b0f0c8;--color-text-dim:rgba(176,240,200,.5);--color-loss-text:#69f0ae;--border-color:rgba(0,200,80,.18);--border-accent:rgba(0,230,118,.65);--gradient-border:linear-gradient(135deg,#00e676,#69f0ae,#00c853,#00e676)}
+        body.theme-4{--bg-page:#100200;--bg-card:rgba(22,4,0,.97);--bg-glass:rgba(255,80,0,.04);--bg-glass-hover:rgba(255,80,0,.08);--bg-header:linear-gradient(135deg,rgba(200,50,0,.2),rgba(255,140,0,.09));--bg-controls:rgba(18,4,0,.9);--bg-table-head:rgba(200,50,0,.12);--bg-table-row:rgba(255,60,0,.025);--bg-table-row-alt:rgba(255,100,0,.055);--bg-loss:rgba(255,150,0,.07);--accent:#ff6b35;--accent2:#ffd700;--accent-glow:rgba(255,107,53,.35);--color-title:#ff8c42;--color-final:#ffd700;--color-grand:#ff4500;--color-text:#ffe0c8;--color-text-dim:rgba(255,224,200,.5);--color-loss-text:#ffd700;--border-color:rgba(255,100,0,.18);--border-accent:rgba(255,107,53,.65);--gradient-border:linear-gradient(135deg,#ff4500,#ff8c00,#ffd700,#ff4500)}
+        body.theme-5{--bg-page:#07000f;--bg-card:rgba(14,0,28,.97);--bg-glass:rgba(160,0,255,.04);--bg-glass-hover:rgba(160,0,255,.08);--bg-header:linear-gradient(135deg,rgba(120,0,200,.2),rgba(200,100,255,.09));--bg-controls:rgba(10,0,20,.9);--bg-table-head:rgba(140,0,220,.12);--bg-table-row:rgba(160,0,255,.025);--bg-table-row-alt:rgba(120,0,200,.06);--bg-loss:rgba(160,100,255,.07);--accent:#c084fc;--accent2:#e056fd;--accent-glow:rgba(192,132,252,.35);--color-title:#c084fc;--color-final:#f0abfc;--color-grand:#e040fb;--color-text:#e8d0ff;--color-text-dim:rgba(232,208,255,.5);--color-loss-text:#f0abfc;--border-color:rgba(160,0,255,.18);--border-accent:rgba(192,132,252,.65);--gradient-border:linear-gradient(135deg,#9b59b6,#e056fd,#a29bfe,#c084fc)}
+        body.theme-6{--bg-page:#001a2e;--bg-card:rgba(0,20,45,.97);--bg-glass:rgba(0,255,200,.04);--bg-glass-hover:rgba(0,255,200,.08);--bg-header:linear-gradient(135deg,rgba(0,150,180,.2),rgba(0,255,200,.08));--bg-controls:rgba(0,15,35,.9);--bg-table-head:rgba(0,180,160,.12);--bg-table-row:rgba(0,255,200,.025);--bg-table-row-alt:rgba(0,200,160,.055);--bg-loss:rgba(0,200,160,.07);--accent:#00ffcc;--accent2:#0096ff;--accent-glow:rgba(0,255,200,.35);--color-title:#00ffcc;--color-final:#00d4ff;--color-grand:#00ffcc;--color-text:#b0ffe8;--color-text-dim:rgba(176,255,232,.5);--color-loss-text:#00ffcc;--border-color:rgba(0,200,160,.18);--border-accent:rgba(0,255,200,.65);--gradient-border:linear-gradient(135deg,#00ffcc,#0096ff,#00e5ff,#00ffcc)}
+        body.theme-7{--bg-page:#1a0a00;--bg-card:rgba(32,14,0,.97);--bg-glass:rgba(255,180,0,.04);--bg-glass-hover:rgba(255,180,0,.08);--bg-header:linear-gradient(135deg,rgba(200,120,0,.2),rgba(255,200,50,.08));--bg-controls:rgba(20,10,0,.9);--bg-table-head:rgba(180,100,0,.12);--bg-table-row:rgba(255,180,0,.025);--bg-table-row-alt:rgba(200,130,0,.055);--bg-loss:rgba(255,200,50,.07);--accent:#ffb300;--accent2:#ff6f00;--accent-glow:rgba(255,179,0,.35);--color-title:#ffd740;--color-final:#ffab40;--color-grand:#ffb300;--color-text:#fff3cd;--color-text-dim:rgba(255,243,205,.5);--color-loss-text:#ffd740;--border-color:rgba(255,160,0,.18);--border-accent:rgba(255,179,0,.65);--gradient-border:linear-gradient(135deg,#ffb300,#ff6f00,#ffd740,#ffb300)}
+        body.theme-8{--bg-page:#0a0a0a;--bg-card:rgba(18,18,18,.97);--bg-glass:rgba(255,255,255,.04);--bg-glass-hover:rgba(255,255,255,.08);--bg-header:linear-gradient(135deg,rgba(80,80,80,.2),rgba(150,150,150,.08));--bg-controls:rgba(10,10,10,.9);--bg-table-head:rgba(100,100,100,.12);--bg-table-row:rgba(255,255,255,.025);--bg-table-row-alt:rgba(255,255,255,.045);--bg-loss:rgba(200,200,200,.06);--accent:#e0e0e0;--accent2:#9e9e9e;--accent-glow:rgba(220,220,220,.25);--color-title:#fff;--color-final:#e0e0e0;--color-grand:#fff;--color-text:#ccc;--color-text-dim:rgba(200,200,200,.5);--color-loss-text:#bdbdbd;--border-color:rgba(150,150,150,.18);--border-accent:rgba(220,220,220,.55);--gradient-border:linear-gradient(135deg,#fff,#9e9e9e,#fff,#bdbdbd)}
+        body.theme-9{--bg-page:#001400;--bg-card:rgba(0,22,0,.97);--bg-glass:rgba(0,255,0,.03);--bg-glass-hover:rgba(0,255,0,.06);--bg-header:linear-gradient(135deg,rgba(0,100,0,.22),rgba(0,200,0,.07));--bg-controls:rgba(0,14,0,.92);--bg-table-head:rgba(0,120,0,.15);--bg-table-row:rgba(0,200,0,.025);--bg-table-row-alt:rgba(0,150,0,.05);--bg-loss:rgba(0,180,0,.07);--accent:#39ff14;--accent2:#00cc44;--accent-glow:rgba(57,255,20,.35);--color-title:#39ff14;--color-final:#69ff47;--color-grand:#39ff14;--color-text:#c8ffc8;--color-text-dim:rgba(200,255,200,.5);--color-loss-text:#69ff47;--border-color:rgba(0,180,0,.2);--border-accent:rgba(57,255,20,.6);--gradient-border:linear-gradient(135deg,#39ff14,#00cc44,#69ff47,#39ff14)}
+        body.theme-10{--bg-page:#fff8f0;--bg-card:rgba(255,252,248,.98);--bg-glass:rgba(220,100,30,.05);--bg-glass-hover:rgba(220,100,30,.09);--bg-header:linear-gradient(135deg,rgba(200,80,20,.1),rgba(255,160,60,.06));--bg-controls:rgba(250,245,240,.95);--bg-table-head:rgba(200,80,20,.07);--bg-table-row:rgba(255,255,255,.85);--bg-table-row-alt:rgba(255,240,228,.85);--bg-loss:rgba(255,200,120,.3);--accent:#c85c00;--accent2:#e07820;--accent-glow:rgba(200,92,0,.25);--color-title:#b04800;--color-final:#a03200;--color-grand:#c85c00;--color-text:#3a1a00;--color-text-dim:rgba(58,26,0,.5);--color-loss-text:#7a3800;--border-color:rgba(200,80,20,.15);--border-accent:rgba(200,92,0,.6);--gradient-border:linear-gradient(135deg,#c85c00,#e07820,#ffa040,#c85c00)}
+        body.theme-11{--bg-page:#0d0d1a;--bg-card:rgba(18,18,40,.97);--bg-glass:rgba(255,0,128,.04);--bg-glass-hover:rgba(255,0,128,.08);--bg-header:linear-gradient(135deg,rgba(180,0,100,.2),rgba(255,80,200,.08));--bg-controls:rgba(10,10,24,.9);--bg-table-head:rgba(180,0,100,.12);--bg-table-row:rgba(255,0,128,.025);--bg-table-row-alt:rgba(200,0,100,.055);--bg-loss:rgba(255,100,200,.07);--accent:#ff4da6;--accent2:#ff80cc;--accent-glow:rgba(255,77,166,.35);--color-title:#ff4da6;--color-final:#ff80cc;--color-grand:#ff4da6;--color-text:#ffe0f0;--color-text-dim:rgba(255,224,240,.5);--color-loss-text:#ff80cc;--border-color:rgba(255,0,128,.18);--border-accent:rgba(255,77,166,.65);--gradient-border:linear-gradient(135deg,#ff4da6,#ff80cc,#cc0066,#ff4da6)}
+        body.theme-12{--bg-page:#001018;--bg-card:rgba(0,18,30,.97);--bg-glass:rgba(30,160,255,.04);--bg-glass-hover:rgba(30,160,255,.08);--bg-header:linear-gradient(135deg,rgba(0,80,140,.22),rgba(30,160,255,.08));--bg-controls:rgba(0,12,22,.9);--bg-table-head:rgba(0,100,180,.14);--bg-table-row:rgba(30,160,255,.025);--bg-table-row-alt:rgba(0,120,200,.05);--bg-loss:rgba(30,160,255,.07);--accent:#29b6f6;--accent2:#81d4fa;--accent-glow:rgba(41,182,246,.35);--color-title:#4fc3f7;--color-final:#81d4fa;--color-grand:#29b6f6;--color-text:#cceeff;--color-text-dim:rgba(204,238,255,.5);--color-loss-text:#81d4fa;--border-color:rgba(30,160,255,.18);--border-accent:rgba(41,182,246,.65);--gradient-border:linear-gradient(135deg,#29b6f6,#81d4fa,#0288d1,#29b6f6)}
+        body.theme-13{--bg-page:#1a0020;--bg-card:rgba(28,0,38,.97);--bg-glass:rgba(200,0,255,.04);--bg-glass-hover:rgba(200,0,255,.08);--bg-header:linear-gradient(135deg,rgba(140,0,180,.2),rgba(255,100,255,.08));--bg-controls:rgba(18,0,26,.9);--bg-table-head:rgba(160,0,200,.12);--bg-table-row:rgba(200,0,255,.025);--bg-table-row-alt:rgba(160,0,200,.055);--bg-loss:rgba(200,100,255,.07);--accent:#e040fb;--accent2:#ff80ff;--accent-glow:rgba(224,64,251,.35);--color-title:#ea80ff;--color-final:#ff80ff;--color-grand:#e040fb;--color-text:#f8e0ff;--color-text-dim:rgba(248,224,255,.5);--color-loss-text:#ff80ff;--border-color:rgba(200,0,255,.18);--border-accent:rgba(224,64,251,.65);--gradient-border:linear-gradient(135deg,#e040fb,#ff80ff,#aa00ff,#e040fb)}
+        body.theme-14{--bg-page:#1a0a1e;--bg-card:rgba(30,10,38,.97);--bg-glass:rgba(255,100,50,.04);--bg-glass-hover:rgba(255,100,50,.08);--bg-header:linear-gradient(135deg,rgba(180,40,20,.22),rgba(255,120,60,.08));--bg-controls:rgba(22,8,28,.9);--bg-table-head:rgba(160,40,20,.14);--bg-table-row:rgba(255,80,30,.025);--bg-table-row-alt:rgba(180,30,10,.055);--bg-loss:rgba(255,120,60,.07);--accent:#ff6e3c;--accent2:#ff9f6e;--accent-glow:rgba(255,110,60,.35);--color-title:#ff7848;--color-final:#ffb07a;--color-grand:#ff5722;--color-text:#ffe8d8;--color-text-dim:rgba(255,232,216,.5);--color-loss-text:#ffb07a;--border-color:rgba(255,80,30,.18);--border-accent:rgba(255,110,60,.65);--gradient-border:linear-gradient(135deg,#ff5722,#ff9f6e,#ffcc80,#ff5722)}
+
+        body{font-family:'Be Vietnam Pro','Times New Roman',sans-serif;background:var(--bg-page);min-height:100vh;display:flex;justify-content:center;padding:20px 10px 40px;overflow-x:hidden;transition:background .5s;position:relative}
+        .app-wrapper{position:relative;z-index:1;max-width:1280px;width:100%;overflow-x:hidden}
+
+        @property --rb-angle{syntax:'<angle>';initial-value:0deg;inherits:false}
+        .rainbow-wrapper{position:relative;border-radius:20px;overflow-x:clip;overflow-y:clip;padding:4px;background:transparent;transition:padding .3s}
+        .rainbow-wrapper .rb-spin{position:absolute;inset:-150%;width:400%;height:400%;background:conic-gradient(#ff0000 0deg,#ff7f00 51deg,#ffff00 102deg,#00cc00 153deg,#0000ff 204deg,#8b00ff 255deg,#ff00cc 306deg,#ff0000 360deg);animation:rbRotate 2s linear infinite;pointer-events:none;z-index:0}
+        .rainbow-wrapper .rb-inner{position:absolute;inset:4px;border-radius:17px;background:var(--bg-page,#060a18);z-index:0;transition:background .5s}
+        .rainbow-wrapper .main-card{position:relative;z-index:1}
+        @keyframes rbRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        .rainbow-wrapper.rainbow-off .rb-spin{animation:none;background:rgba(100,100,100,.2)}
+        .rainbow-wrapper.rainbow-off .rb-inner{inset:2px;border-radius:19px}
+        .main-card{background:var(--bg-card);border-radius:18px;position:relative;z-index:1;overflow-x:clip;overflow-y:visible;transition:background .4s}
+
+        .header-banner{background:var(--bg-header);border-bottom:1px solid var(--border-color);padding:24px 28px 20px;text-align:center;position:relative}
+        .header-banner::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;background:var(--gradient-border);opacity:.6}
+        .header-icon{font-size:32px;margin-bottom:6px;display:block;animation:floatIcon 3s ease-in-out infinite}
+        @keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+        .header-title{font-family:'Orbitron',monospace;font-size:clamp(16px,2.5vw,24px);font-weight:900;color:var(--color-title);letter-spacing:2px;text-shadow:0 0 20px var(--accent-glow)}
+        .header-month-tag{display:inline-block;margin-top:6px;background:var(--bg-glass);border:1px solid var(--border-accent);border-radius:20px;padding:3px 14px;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:1px}
+        #titleMonth{display:none;font-family:'Times New Roman',serif;font-size:20px;font-weight:bold;color:#0054a5;text-align:center;padding:16px;background:#f0f8ff!important}
+        tr.export-title-row{display:none}
+
+        .controls{display:flex;gap:7px;padding:14px 18px;flex-wrap:wrap;align-items:center;background:var(--bg-controls);border-bottom:1px solid var(--border-color);transition:background .4s}
+        .month-picker{display:flex;align-items:center;gap:7px;background:var(--bg-glass);border:1px solid var(--border-color);border-radius:10px;padding:5px 12px}
+        .month-picker input[type="month"]{border:none;background:transparent;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;color:var(--color-title);outline:none;cursor:pointer}
+        #statusArea{display:flex;align-items:center}
+        .status-badge{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px}
+        .status-open{background:rgba(0,200,80,.15);color:#00e676;border:1px solid rgba(0,200,80,.3)}
+        .status-locked{background:rgba(255,60,60,.15);color:#ff6b6b;border:1px solid rgba(255,60,60,.3)}
+        @property --btn-angle{syntax:'<angle>';initial-value:0deg;inherits:false}
+        .btn{padding:8px 13px;cursor:pointer;border:none;border-radius:10px;font-weight:700;font-size:12px;font-family:'Be Vietnam Pro',sans-serif;display:inline-flex;align-items:center;gap:5px;min-height:36px;white-space:nowrap;transition:transform .15s,filter .15s,box-shadow .15s;position:relative;overflow:visible;z-index:0}
+        .btn::before{content:'';position:absolute;inset:-2px;border-radius:12px;background:conic-gradient(from var(--btn-angle),#ff0000,#ff7f00,#ffff00,#00cc00,#0000ff,#8b00ff,#ff0000);z-index:-1;animation:btnRainbow 2s linear infinite;opacity:.9}
+        .btn::after{content:'';position:absolute;inset:1.5px;border-radius:9px;background:inherit;z-index:-1}
+        @keyframes btnRainbow{to{--btn-angle:360deg}}
+        .btn:active{transform:scale(.95)}.btn:hover{filter:brightness(1.15);box-shadow:0 4px 20px rgba(0,0,0,.4)}
+
+        #tableScrollWrapper{width:100%;overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;padding:16px 18px;box-sizing:border-box}
+        #tableScrollWrapper::-webkit-scrollbar{height:5px}
+        #tableScrollWrapper::-webkit-scrollbar-track{background:var(--bg-glass);border-radius:3px}
+        #tableScrollWrapper::-webkit-scrollbar-thumb{background:var(--border-accent);border-radius:3px}
+        @keyframes rb7{
+            0%  {border-color:#ff0000}
+            14% {border-color:#ff7f00}
+            28% {border-color:#ffff00}
+            42% {border-color:#00cc00}
+            57% {border-color:#00aaff}
+            71% {border-color:#4b0082}
+            85% {border-color:#ee00ff}
+            100%{border-color:#ff0000}
+        }
+        table{width:100%;border-collapse:separate;border-spacing:0;min-width:1159px;table-layout:fixed;border:1px solid;animation:rb7 2s linear infinite}
+        thead tr th{
+            background:var(--bg-table-head)!important;
+            color:var(--color-text);
+            font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+            padding:11px 7px;
+            border-bottom:2px solid;
+            border-right:1px solid;
+            white-space:normal;word-break:break-word;text-align:center;
+            animation:rb7 2s linear infinite
+        }
+        thead tr th:last-child{border-right:none}
+        .title-header{font-family:'Orbitron',monospace!important;font-size:18px!important;font-weight:900!important;color:var(--color-title)!important;text-align:center!important;padding:18px!important;background:var(--bg-header)!important;border-right:none!important;text-shadow:0 0 16px var(--accent-glow)!important;animation:rb7 2s linear infinite!important}
+        .data-row td{
+            padding:7px 5px;
+            border-bottom:1px solid;
+            border-right:1px solid;
+            font-size:13px;color:var(--color-text);
+            background:var(--bg-table-row)!important;
+            transition:background .2s,color .4s;
+            vertical-align:middle;
+            animation:rb7 2s linear infinite
+        }
+        .data-row:nth-child(even) td{background:var(--bg-table-row-alt)!important}
+        .data-row:hover td{background:var(--bg-glass-hover)!important}
+        .data-row td:last-child{border-right:none}
+        tfoot tr td{
+            color:var(--color-text);
+            border-top:1px solid;
+            border-bottom:1px solid;
+            border-right:1px solid;
+            padding:11px 13px;
+            transition:color .4s;
+            animation:rb7 2s linear infinite
+        }
+        tfoot tr td:last-child{border-right:none}
+
+        .col-stt{width:40px;cursor:pointer;text-align:center;font-weight:800;color:var(--accent)!important}
+        .col-name{width:171px;text-align:center!important}
+        .col-img{width:66px;text-align:center}
+        .col-kwh{background:rgba(0,200,100,.05)!important}
+        .col-final{font-weight:800;color:#cc0000!important;font-size:13px;background:rgba(255,60,80,.05)!important}
+
+        input{width:100%;border:none;text-align:center;font-size:13px;font-family:'Be Vietnam Pro',sans-serif;outline:none;background:transparent;color:var(--color-text);padding:3px 0;transition:color .3s,border-color .2s}
+        input[type="file"]{
+            display:none!important;
+            width:0!important;height:0!important;
+            opacity:0!important;
+            position:absolute!important;
+            pointer-events:none!important;
+            visibility:hidden!important
+        }
+        input:focus{border-bottom:1px solid var(--accent)}
+        input:disabled{color:var(--color-text);opacity:.85;-webkit-text-fill-color:var(--color-text)}
+        .col-name input{text-align:center;font-weight:600}
+
+        .img-preview{display:none;cursor:pointer;transition:border-color .2s,transform .2s}
+        .img-preview[src=""]{display:none!important}
+        .img-preview:not([src]){display:none!important}
+        .img-preview.has-img{width:44px;height:44px;object-fit:cover;border-radius:8px;border:2px solid var(--border-color);display:block!important}
+        .img-preview.has-img:hover{border-color:var(--accent);transform:scale(1.1)}
+
+        .img-container{display:flex;flex-direction:column;align-items:center;gap:3px}
+        .upload-btn{font-size:10px;color:var(--accent);cursor:pointer;font-weight:700;background:var(--bg-glass);padding:2px 7px;border-radius:5px;border:1px solid var(--border-color);transition:background .2s;white-space:nowrap}
+        .upload-btn:hover{background:var(--bg-glass-hover)}
+        #footerMain td{background:var(--bg-glass)!important}
+        .footer-kwh-row{display:flex;align-items:center;flex-wrap:wrap;gap:14px;font-size:13px;font-weight:600}
+        .footer-kwh-row input{width:80px;display:inline}
+        .loss-summary td{background:var(--bg-loss)!important;color:var(--color-loss-text)!important;font-size:13px;font-weight:600}
+        .loss-value{color:var(--accent);font-weight:800;font-size:14px}
+        #lblLossKwh{color:#cc0000!important}
+        .loss-share{font-weight:700!important}
+        .final-total{color:#cc0000!important;font-weight:800!important}
+        #lblGrandTotal{font-family:'Orbitron',monospace;color:#cc0000!important;font-weight:900;font-size:clamp(26px,4vw,38px);text-shadow:0 0 12px rgba(200,0,0,.5),0 0 30px rgba(200,0,0,.3);display:block;animation:pulseGrand 2.5s ease-in-out infinite}
+        @keyframes pulseGrand{0%,100%{text-shadow:0 0 12px rgba(200,0,0,.5),0 0 30px rgba(200,0,0,.3)}50%{text-shadow:0 0 28px rgba(220,0,0,.8),0 0 60px rgba(180,0,0,.5)}}
+        .calculation-guide{margin:16px 18px 20px;padding:18px 22px;background:var(--bg-glass);border:1px solid var(--border-color);border-radius:14px;line-height:2.1;text-align:left;font-size:13px;transition:background .4s}
+        .guide-title{font-size:14px;font-weight:800;color:var(--color-title);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+        .rainbow-text{display:block;font-weight:600;font-size:13px;background:linear-gradient(to right,#ff6b6b,#ffd700,#00e676,#00b4ff,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:300% 100%;animation:moveGradient 4s linear infinite}
+        @keyframes moveGradient{0%{background-position:0%}100%{background-position:300%}}
+
+        #imgModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:10000;justify-content:center;align-items:center;backdrop-filter:blur(8px)}
+        #imgModal img{max-width:92%;max-height:92%;border-radius:12px;border:2px solid var(--border-accent)}
+
+        #settingsPanel{position:fixed;bottom:20px;right:16px;z-index:10001;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+        #gearBtn{width:52px;height:52px;border-radius:50%;cursor:pointer;background:var(--bg-card);border:2px solid var(--border-accent);color:var(--accent);font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 18px var(--accent-glow);backdrop-filter:blur(10px);transition:transform .35s cubic-bezier(.68,-.55,.27,1.55),box-shadow .3s}
+        #gearBtn:hover{transform:rotate(60deg) scale(1.1);box-shadow:0 4px 30px var(--accent-glow)}
+        #gearBtn.open{transform:rotate(90deg)}
+        #settingsPopup{display:none;flex-direction:column;gap:12px;background:var(--bg-card);padding:16px 14px;border-radius:18px;border:1px solid var(--border-accent);backdrop-filter:blur(20px);box-shadow:0 8px 40px rgba(0,0,0,.7),0 0 28px var(--accent-glow);min-width:220px;animation:popIn .2s ease-out}
+        #settingsPopup.open{display:flex}
+        @keyframes popIn{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+        .sp-label{font-size:10px;font-weight:700;color:var(--color-text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+        .sp-btn{width:100%;padding:9px 12px;border-radius:10px;border:none;font-size:12px;font-weight:700;font-family:'Be Vietnam Pro',sans-serif;cursor:pointer;color:white;display:flex;align-items:center;gap:8px;transition:opacity .15s,transform .1s}
+        .sp-btn:active{transform:scale(.96)}.sp-btn:hover{opacity:.88}
+        .sp-themes{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+        .theme-dot{width:38px;height:38px;border-radius:50%;cursor:pointer;border:3px solid rgba(255,255,255,.15);box-shadow:0 2px 10px rgba(0,0,0,.5);transition:transform .2s,border-color .2s,box-shadow .2s;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .theme-dot:hover{transform:scale(1.15)}
+        .theme-dot.active{border-color:#fff;transform:scale(1.2);box-shadow:0 0 14px rgba(255,255,255,.5)}
+        .sp-divider{border:none;border-top:1px solid var(--border-color);margin:0}
+        #rainbowToggleBtn{width:100%;padding:9px 12px;border-radius:10px;border:none;font-size:12px;font-weight:700;font-family:'Be Vietnam Pro',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .1s,filter .15s}
+        #rainbowToggleBtn.rb-on{background:conic-gradient(#ff0000 0deg 51deg,#ff7f00 51deg 102deg,#ffff00 102deg 153deg,#00cc00 153deg 204deg,#0000ff 204deg 255deg,#4b0082 255deg 306deg,#8b00ff 306deg 360deg);color:white;box-shadow:0 3px 14px rgba(255,100,0,.35)}
+        #rainbowToggleBtn.rb-off{background:linear-gradient(135deg,#2d3748,#4a5568);color:rgba(255,255,255,.45)}
+        #randomThemeBtn{width:100%;padding:9px 12px;border-radius:10px;border:none;font-size:12px;font-weight:800;font-family:'Be Vietnam Pro',sans-serif;cursor:pointer;color:white;display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(90deg,#ff0080,#ff6b35,#ffd700,#00e676,#00b4ff,#c084fc,#ff0080);background-size:400% 100%;animation:rbShimmer 3s linear infinite;box-shadow:0 3px 14px rgba(255,100,100,.3);transition:transform .1s,filter .15s}
+        #randomThemeBtn.auto-on{outline:2px solid rgba(255,255,255,.8);outline-offset:2px}
+        @keyframes rbShimmer{0%{background-position:0% 50%}100%{background-position:400% 50%}}
+        #themeNamePopup{position:fixed;bottom:84px;right:16px;z-index:99998;pointer-events:none;opacity:0}
+        #themeNamePopup.show{animation:tpIn .25s ease-out forwards,tpOut .3s ease-in 0.85s forwards}
+        @keyframes tpIn{from{opacity:0;transform:translateX(16px) scale(.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+        @keyframes tpOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.9)}}
+        .tp-inner{background:var(--bg-card);border:1px solid var(--border-accent);border-radius:12px;padding:7px 13px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.5),0 0 12px var(--accent-glow);white-space:nowrap}
+        .tp-emoji{font-size:18px;line-height:1}
+        .tp-name{font-size:12px;font-weight:800;color:var(--color-title);display:block}
+        .tp-num{font-size:10px;color:var(--color-text-dim);font-weight:600;display:block}
+        .delete-active .data-row td:first-child{background:rgba(220,53,69,.15)!important;cursor:pointer}
+        .delete-active .data-row td:first-child:hover{background:rgba(220,53,69,.4)!important}
+        .delete-active .data-row td:first-child .stt-num{display:none}
+        .delete-active .data-row td:first-child::after{content:'❌';font-size:16px}
+
+        .is-capturing{overflow:visible!important;width:1280px!important;max-width:none!important;background:white!important;border-radius:0!important}
+        .is-capturing .col-img{display:none!important;width:0!important;padding:0!important;border:none!important;overflow:hidden!important}
+        .is-capturing .header-banner{display:none!important}
+        .is-capturing tr.export-title-row{display:table-row!important}
+        .is-capturing #titleMonth{display:table-cell!important;background:#dbeafe!important;color:#0054a5!important;font-family:'Times New Roman',serif!important}
+        .is-capturing .title-header{font-family:'Times New Roman',serif!important;font-size:20px!important;font-weight:bold!important;color:#0054a5!important;background:#dbeafe!important;text-shadow:none!important;animation:none!important}
+        .is-capturing table{border-collapse:collapse!important;border-spacing:0!important;border:none!important;animation:none!important}
+        .is-capturing thead tr th{background:#e8f4fd!important;color:#000!important;border:1.5px solid #aac4e0!important;animation:none!important;padding:12px 7px!important;line-height:1.5!important}
+        .is-capturing .col-final{background:#fff0f0!important}
+        .is-capturing tfoot tr td{animation:none!important;border:1.5px solid #aac4e0!important}
+        .is-capturing input{color:#000!important;-webkit-text-fill-color:#000!important;line-height:1.6!important;padding:4px 0!important}
+        .is-capturing .data-row td{background:white!important;color:#000!important;border:1.5px solid #aac4e0!important;animation:none!important;padding:12px 5px!important;line-height:1.5!important}
+        .is-capturing .data-row td.col-kwh{background:#f0fff4!important}
+        .is-capturing .data-row td.col-final{background:#fff0f0!important}
+        .is-capturing .data-row td.col-final span{color:#cc0000!important;font-weight:800!important}
+        .is-capturing tfoot tr td{background:white!important;color:#000!important;border:1.5px solid #aac4e0!important;animation:none!important}
+        .is-capturing .loss-summary td{background:#fffbe6!important;color:#7a5900!important;border:1.5px solid #e0c96e!important}
+        .is-capturing .loss-value{color:#0054a5!important;font-weight:800!important}
+        .is-capturing #lblLossKwh{color:#cc0000!important}
+        .is-capturing .loss-share{font-weight:700!important}
+        .is-capturing #lblGrandTotal{color:#cc0000!important;font-family:'Times New Roman',serif!important;font-size:28px!important;animation:none!important;text-shadow:none!important}
+        .is-capturing .grand-total-label{color:#000!important;font-family:'Times New Roman',serif!important;font-size:16px!important}
+        .is-capturing .grand-total-row td{background:#fff8f8!important;border:1.5px solid #aac4e0!important}
+        .is-capturing .upload-btn{display:none!important}
+        .is-capturing .rainbow-text{background:none!important;-webkit-text-fill-color:#0054a5!important;animation:none!important}
+        .is-capturing .calculation-guide{background:#e8f4fd!important;border:1.5px solid #aac4e0!important;color:#2563a8!important}
+        .is-capturing .calculation-guide *{color:#2563a8!important}
+        .is-capturing .guide-title{color:#0054a5!important;font-weight:800!important}
+        .is-capturing .btn::before{animation:none!important;opacity:0!important}
+        .is-capturing .btn{overflow:hidden!important}
+        .hide-for-capture{display:none!important}
+
+        @media(max-width:768px){body{padding:10px 5px 30px}.header-title{font-size:15px}.btn{padding:7px 10px;font-size:11px}.controls{gap:5px;padding:10px 12px}#settingsPanel{bottom:10px;right:8px}#lblGrandTotal{font-size:24px}#themeNamePopup{bottom:76px;right:8px}}
+    </style>
+</head>
+<body id="mainBody">
+
+<div id="themeNamePopup">
+    <div class="tp-inner">
+        <span class="tp-emoji" id="popupEmoji">🌌</span>
+        <div>
+            <span class="tp-name" id="popupName">Vũ Trụ</span>
+            <span class="tp-num" id="popupNum">Theme #1 / 14</span>
+        </div>
+    </div>
+</div>
+
+<div id="settingsPanel">
+    <div id="settingsPopup">
+        <div>
+            <div class="sp-label">🎨 Giao Diện</div>
+            <div class="sp-themes" id="themeDotsContainer"></div>
+        </div>
+        <hr class="sp-divider">
+        <div>
+            <div class="sp-label">🌈 Viền 7 Màu</div>
+            <button id="rainbowToggleBtn" class="rb-on" onclick="toggleRainbow()">🌈 Viền 7 màu: BẬT</button>
+        </div>
+        <hr class="sp-divider">
+        <div>
+            <div class="sp-label">🎲 Random Theme (5s)</div>
+            <button id="randomThemeBtn" onclick="toggleAutoRandom()">▶️ Bật tự động đổi</button>
+        </div>
+        <hr class="sp-divider">
+        <div>
+            <div class="sp-label">💾 Dữ Liệu</div>
+            <button class="sp-btn" onclick="exportData();toggleSettingsPanel()" style="background:linear-gradient(135deg,#0f7a7a,#17a2b8)">📤 Backup file</button>
+        </div>
+        <div>
+            <label class="sp-btn" style="background:linear-gradient(135deg,#c78a00,#ffc107);color:#000;cursor:pointer">
+                📥 Nhập file khôi phục
+                <input type="file" id="importFile" onchange="importData(event)" accept=".json">
+            </label>
+        </div>
+    </div>
+    <div id="gearBtn" onclick="toggleSettingsPanel()" title="Cài đặt">⚙️</div>
+</div>
+
+<div id="imgModal" onclick="this.style.display='none'"><img id="modalImg" src=""></div>
+
+<div id="deleteModal" style="display:none;position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);justify-content:center;align-items:center">
+    <div style="background:linear-gradient(135deg,#1a0a0a,#2d0f0f);border:2px solid rgba(220,53,69,.6);border-radius:20px;padding:32px 36px;text-align:center;min-width:300px;box-shadow:0 0 40px rgba(220,53,69,.3)">
+        <div style="font-size:48px;margin-bottom:12px">🗑️</div>
+        <div style="font-size:18px;font-weight:800;color:#ff6b6b;margin-bottom:8px">Xóa hộ này?</div>
+        <div id="deleteModalName" style="font-size:14px;color:rgba(255,200,200,.7);margin-bottom:24px"></div>
+        <div style="display:flex;gap:12px;justify-content:center">
+            <button onclick="confirmDeleteYes()" style="padding:10px 28px;border-radius:12px;border:none;background:linear-gradient(135deg,#a0000a,#dc3545);color:white;font-size:14px;font-weight:700;cursor:pointer">✅ Xóa</button>
+            <button onclick="confirmDeleteNo()" style="padding:10px 28px;border-radius:12px;border:none;background:linear-gradient(135deg,#2d3748,#4a5568);color:white;font-size:14px;font-weight:700;cursor:pointer">❌ Huỷ</button>
+        </div>
+    </div>
+</div>
+
+<div class="app-wrapper">
+<div class="rainbow-wrapper" id="rainbowWrapper">
+<div class="rb-spin"></div><div class="rb-inner" id="rbInner"></div>
+<div class="main-card" id="captureArea">
+    <div class="header-banner" id="displayHeader">
+        <span class="header-icon">⚡</span>
+        <div class="header-title">SỔ QUẢN LÝ MUA BÁN ĐIỆN</div>
+        <div class="header-month-tag" id="displayMonthTag">THÁNG 03/2026</div>
+    </div>
+    <div class="controls" id="controlsBar">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <div class="month-picker">
+                <span style="font-size:14px">📅</span>
+                <strong style="font-size:12px;color:var(--color-text-dim)">Tháng:</strong>
+                <input type="month" id="currentMonth" onchange="changeMonth()">
+            </div>
+            <div id="statusArea"></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-left:auto">
+            <button class="btn" id="lockBtn" onclick="toggleLock()" style="background:linear-gradient(135deg,#5a32a0,#6f42c1);color:white"><span id="lockBtnText">🔒 Khóa tháng</span></button>
+            <button class="btn" onclick="addRow()" style="background:linear-gradient(135deg,#1a8a35,#28a745);color:white">➕ Thêm Hộ Mới</button>
+            <button class="btn" id="deleteModeBtn" onclick="toggleDeleteMode()" style="background:linear-gradient(135deg,#4a5568,#6c757d);color:white">🗑 Chế Độ Xóa</button>
+            <button class="btn" onclick="saveToLocal()" style="background:linear-gradient(135deg,#0056b3,#007bff);color:white">💾 Lưu Dữ liệu</button>
+            <button class="btn" style="background:linear-gradient(135deg,#a0186d,#d63384);color:white" onclick="exportToPNG()">📸 Xuất Ảnh Nè</button>
+        </div>
+    </div>
+    <div id="tableScrollWrapper">
+        <table id="mainTable">
+            <colgroup>
+                <col style="width:44px"><col style="width:171px"><col style="width:70px">
+                <col style="width:110px"><col style="width:110px"><col style="width:110px">
+                <col style="width:115px"><col style="width:115px"><col style="width:150px"><col style="width:155px">
+            </colgroup>
+            <thead>
+                <tr class="export-title-row"><th colspan="10" id="titleMonth" class="title-header">SỔ QUẢN LÝ MUA BÁN ĐIỆN</th></tr>
+                <tr>
+                    <th class="col-stt">STT</th><th class="col-name">Tên hộ</th><th class="col-img">Ảnh ĐH</th>
+                    <th>SĐ tháng trước</th><th>SĐ tháng này</th><th class="col-kwh">Số kí tiêu thụ (kWh)</th>
+                    <th>Giá điện (VNĐ)</th><th>Tiền điện (VNĐ)</th><th>Tiền điện thất thoát (VNĐ)</th>
+                    <th class="col-final">TIỀN PHẢI NỘP (VNĐ)</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+            <tfoot>
+                <tr><td colspan="10" id="footerMain">
+                    <div class="footer-kwh-row">
+                        <span>📊 Số ĐH tổng tháng
+                            <input type="text" id="footerMonthLabel" style="width:26px;font-weight:800;border-bottom:1px solid var(--border-accent)">:
+                            <input type="number" id="tongDHThang" oninput="updateTotals()" style="width:90px;font-weight:700;border-bottom:1px solid var(--border-accent)"> (kWh)
+                        </span>
+                        <div style="display:flex;align-items:center;gap:8px">
+                            <span style="font-size:11px;color:var(--color-text-dim)">📷 Ảnh Tổng:</span>
+                            <div class="img-container" id="mainImgContainer">
+                                <span class="upload-btn" id="uploadMainBtn" onclick="document.getElementById('fileMain').click()">Up Ảnh</span>
+                                <span class="upload-btn" id="deleteMainImgBtn" style="display:none;background:rgba(220,53,69,.15);color:#ff6b6b;border-color:rgba(220,53,69,.4)" onclick="clearMainImg()">🗑 Xóa</span>
+                                <input type="file" id="fileMain" accept="image/*" onchange="previewImg(this,'mainMeterImg')">
+                            </div>
+                        </div>
+                    </div>
+                </td></tr>
+                <tr class="loss-summary">
+                    <td colspan="4" id="f_col1">⚡ Tổng ĐH các hộ tiêu thụ trong tháng: <span class="loss-value" id="lblTotalKwh">0</span> kWh</td>
+                    <td colspan="3" id="f_col2">🔌 Điện tổng tiêu thụ trong tháng: <span class="loss-value" id="lblMainConsumption">0</span> kWh</td>
+                    <td colspan="3" id="f_col3">⚠️ Số kí điện thất thoát của tháng: <span class="loss-value" id="lblLossKwh">0</span> kWh</td>
+                </tr>
+                <tr class="loss-summary">
+                    <td colspan="5" id="f_col4">💰 Tổng tiền điện: <span class="loss-value" id="lblTotalBaseMoney">0</span> đ</td>
+                    <td colspan="5" id="f_col5">💸 Tiền điện thất thoát (×2.400đ): <span class="loss-value" id="lblLossMoney">0</span> đ</td>
+                </tr>
+                <tr class="grand-total-row"><td colspan="10" id="f_col6" style="text-align:center!important;padding:22px!important">
+                    <div class="grand-total-label">🏆 TỔNG TIỀN PHẢI NỘP TRONG THÁNG</div>
+                    <span id="lblGrandTotal">0đ</span>
+                </td></tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="calculation-guide">
+        <div class="guide-title">📋 Ghi chú cách tính:</div>
+        <span class="rainbow-text">• Số kí tiêu thụ (kWh): Số ĐH tháng này trừ Số ĐH tháng trước.</span>
+        <span class="rainbow-text">• Tiền điện: Số kí tiêu thụ × Giá điện (2.400đ).</span>
+        <span class="rainbow-text">• TIỀN PHẢI NỘP: Tiền điện + Tiền điện thất thoát.</span>
+        <span class="rainbow-text">• Số kí điện thất thoát: Điện tổng tiêu thụ trong tháng trừ cho Tổng điện các hộ dùng trong tháng để ra số kí thất thoát.</span>
+        <span class="rainbow-text">• Tiền điện thất thoát (từng hộ): Chia theo tỉ lệ số kí tiêu thụ(hộ dùng ít chịu ít,hộ dùng nhiều chịu nhiều).</span>
+        <span class="rainbow-text">• Công thức thất thoát: Số kí thất thoát × 2.400đ.</span>
+    </div>
+</div>
+</div>
+</div>
+
+<div id="savePopup" style="display:none;position:fixed;inset:0;z-index:30000;background:rgba(0,0,0,.7);backdrop-filter:blur(14px);justify-content:center;align-items:center">
+  <div style="background:var(--bg-card);border:2px solid var(--border-accent);border-radius:26px;padding:38px 40px 32px;text-align:center;min-width:320px;max-width:390px;width:90%;box-shadow:0 0 80px var(--accent-glow),0 24px 60px rgba(0,0,0,.85);animation:sp-pop .38s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden">
+    <div style="position:absolute;top:-90px;left:50%;transform:translateX(-50%);width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 68%);pointer-events:none;opacity:.4"></div>
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 18px;box-shadow:0 0 32px var(--accent-glow);animation:sp-icon .42s cubic-bezier(.34,1.56,.64,1) .06s both;position:relative;z-index:1">💾</div>
+    <div style="font-size:22px;font-weight:900;color:var(--color-title);text-shadow:0 0 20px var(--accent-glow);margin-bottom:8px;position:relative;z-index:1">✅ Đã lưu thành công!</div>
+    <div id="spMonth" style="font-size:13px;font-weight:700;color:var(--accent);background:var(--bg-glass);border:1px solid var(--border-accent);border-radius:20px;padding:5px 20px;display:inline-block;margin-bottom:22px;position:relative;z-index:1"></div>
+    <div style="display:flex;gap:10px;margin-bottom:20px;position:relative;z-index:1">
+      <div style="flex:1;background:var(--bg-glass);border:1px solid var(--border-color);border-radius:14px;padding:14px 8px;text-align:center">
+        <div style="font-size:11px;font-weight:600;color:var(--color-text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🏠 Số hộ</div>
+        <div id="spRows" style="font-size:28px;font-weight:900;color:var(--accent);line-height:1">0</div>
+      </div>
+      <div style="flex:2;background:var(--bg-glass);border:1px solid var(--border-color);border-radius:14px;padding:14px 10px;text-align:center">
+        <div style="font-size:11px;font-weight:600;color:var(--color-text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">💰 Tổng nộp</div>
+        <div id="spTotal" style="font-size:16px;font-weight:800;color:var(--color-final);word-break:break-all;line-height:1.4">0đ</div>
+      </div>
+      <div style="flex:1;background:var(--bg-glass);border:1px solid var(--border-color);border-radius:14px;padding:14px 8px;text-align:center">
+        <div style="font-size:11px;font-weight:600;color:var(--color-text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🕐 Lưu lúc</div>
+        <div id="spTime" style="font-size:13px;font-weight:700;color:var(--color-text);line-height:1.5">--:--</div>
+      </div>
+    </div>
+    <div style="height:5px;border-radius:3px;background:var(--bg-glass);overflow:hidden;margin-bottom:22px;position:relative;z-index:1">
+      <div id="spBar" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));background-size:200% 100%;border-radius:3px;animation:sp-drain 2.8s linear forwards,sp-shimmer 1.2s linear infinite"></div>
+    </div>
+    <button onclick="closeSavePopup()" style="background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px;color:white;font-size:15px;font-weight:800;padding:14px 48px;cursor:pointer;box-shadow:0 6px 22px var(--accent-glow);position:relative;z-index:1">OK 👍</button>
+  </div>
+</div>
+<style>
+@keyframes sp-pop{from{opacity:0;transform:scale(.65) translateY(28px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes sp-icon{from{transform:scale(0) rotate(-30deg)}to{transform:scale(1) rotate(0)}}
+@keyframes sp-drain{from{width:100%}to{width:0}}
+@keyframes sp-shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+</style>
+
+<script>
+function showSavePopup(){
+    const m=document.getElementById('currentMonth').value,p=m.split('-');
+    document.getElementById('spMonth').innerText='THÁNG '+p[1]+'/'+p[0];
+    document.getElementById('spRows').innerText=document.querySelectorAll('.data-row').length;
+    document.getElementById('spTotal').innerText=document.getElementById('lblGrandTotal').innerText;
+    document.getElementById('spTime').innerText=new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const bar=document.getElementById('spBar');
+    bar.style.animation='none';void bar.offsetHeight;
+    bar.style.animation='sp-drain 2.8s linear forwards,sp-shimmer 1.2s linear infinite';
+    document.getElementById('savePopup').style.display='flex';
+    clearTimeout(window._spT);window._spT=setTimeout(closeSavePopup,2800);
+}
+function closeSavePopup(){document.getElementById('savePopup').style.display='none';}
+document.getElementById('savePopup').addEventListener('click',function(e){if(e.target===this)closeSavePopup();});
+
+const TOTAL_THEMES=14;
+const TI=[
+    {bg:'radial-gradient(circle,#00b4ff,#060a18)',e:'🌌',n:'Vũ Trụ'},
+    {bg:'radial-gradient(circle,#1a5cb8,#eef2ff)',e:'☀️',n:'Ban Ngày'},
+    {bg:'radial-gradient(circle,#00e676,#020d05)',e:'🌿',n:'Thiên Nhiên'},
+    {bg:'radial-gradient(circle,#ff6b35,#100200)',e:'🔥',n:'Lửa Đỏ'},
+    {bg:'radial-gradient(circle,#c084fc,#07000f)',e:'🔮',n:'Huyền Bí'},
+    {bg:'radial-gradient(circle,#00ffcc,#001a2e)',e:'🌊',n:'Đại Dương'},
+    {bg:'radial-gradient(circle,#ffb300,#1a0a00)',e:'✨',n:'Hoàng Kim'},
+    {bg:'radial-gradient(circle,#e0e0e0,#0a0a0a)',e:'🖤',n:'Đen Trắng'},
+    {bg:'radial-gradient(circle,#39ff14,#001400)',e:'☢️',n:'Neon Xanh'},
+    {bg:'radial-gradient(circle,#c85c00,#fff8f0)',e:'🍊',n:'Cam Sáng'},
+    {bg:'radial-gradient(circle,#ff4da6,#0d0d1a)',e:'💗',n:'Hồng Đêm'},
+    {bg:'radial-gradient(circle,#29b6f6,#001018)',e:'🧊',n:'Băng Xanh'},
+    {bg:'radial-gradient(circle,#e040fb,#1a0020)',e:'🌸',n:'Tím Pha Lê'},
+    {bg:'radial-gradient(circle,#ff6e3c,#1a0a1e)',e:'🌅',n:'Hoàng Hôn'},
+];
+
+let db=JSON.parse(localStorage.getItem('electricDB_vPhoto'))||{};
+let currentTheme=parseInt(localStorage.getItem('currentTheme')||'1');
+if(isNaN(currentTheme)||currentTheme<1||currentTheme>TOTAL_THEMES)currentTheme=1;
+let rainbowOn=localStorage.getItem('rainbowOn')!=='false';
+let autoRandom=false,autoTimer=null,popupTimer=null;
+const monthInput=document.getElementById('currentMonth');
+if(!monthInput.value)monthInput.value=new Date().toISOString().substring(0,7);
+
+function toggleRainbow(){rainbowOn=!rainbowOn;localStorage.setItem('rainbowOn',rainbowOn);applyRainbowUI();}
+function applyRainbowUI(){
+    const rw=document.getElementById('rainbowWrapper'),btn=document.getElementById('rainbowToggleBtn');
+    if(rainbowOn){rw.classList.remove('rainbow-off');btn.className='rb-on';btn.innerHTML='🌈 Viền 7 màu: BẬT';}
+    else{rw.classList.add('rainbow-off');btn.className='rb-off';btn.innerHTML='⬜ Viền 7 màu: TẮT';}
+}
+function toggleAutoRandom(){
+    autoRandom=!autoRandom;
+    const btn=document.getElementById('randomThemeBtn');
+    if(autoRandom){btn.classList.add('auto-on');btn.innerHTML='⏸️ Dừng tự động đổi';doRandomTheme();autoTimer=setInterval(doRandomTheme,5000);}
+    else{clearInterval(autoTimer);autoTimer=null;btn.classList.remove('auto-on');btn.innerHTML='▶️ Bật tự động đổi';}
+}
+function doRandomTheme(){let next;do{next=Math.floor(Math.random()*TOTAL_THEMES)+1;}while(next===currentTheme&&TOTAL_THEMES>1);setTheme(next,true);}
+function showThemePopup(n){
+    const info=TI[n-1];
+    document.getElementById('popupEmoji').textContent=info.e;
+    document.getElementById('popupName').textContent=info.n;
+    document.getElementById('popupNum').textContent='Theme #'+n+' / '+TOTAL_THEMES;
+    const p=document.getElementById('themeNamePopup');
+    p.classList.remove('show');void p.offsetHeight;p.classList.add('show');
+    clearTimeout(popupTimer);popupTimer=setTimeout(()=>p.classList.remove('show'),1200);
+}
+function buildThemeDots(){
+    const c=document.getElementById('themeDotsContainer');c.innerHTML='';
+    TI.forEach((t,i)=>{
+        const d=document.createElement('div');
+        d.className='theme-dot'+(i+1===currentTheme?' active':'');
+        d.style.background=t.bg;d.title=t.n;d.innerText=t.e;
+        d.onclick=()=>setTheme(i+1,true);c.appendChild(d);
+    });
+}
+function setTheme(n,showP=false){currentTheme=n;localStorage.setItem('currentTheme',n);applyThemeUI();if(showP)showThemePopup(n);}
+function applyThemeUI(){
+    const b=document.body;
+    for(let i=1;i<=TOTAL_THEMES;i++)b.classList.remove('theme-'+i);
+    b.classList.add('theme-'+currentTheme);
+    const m={1:'#060a18',2:'#eef2ff',3:'#020d05',4:'#100200',5:'#07000f',6:'#001a2e',7:'#1a0a00',8:'#0a0a0a',9:'#001400',10:'#fff8f0',11:'#0d0d1a',12:'#001018',13:'#1a0020',14:'#1a0a1e'};
+    b.style.background=m[currentTheme];
+    const rbi=document.getElementById('rbInner');if(rbi)rbi.style.background=m[currentTheme];
+    void b.offsetHeight;buildThemeDots();
+    document.querySelectorAll('input:not([type="file"])').forEach(i=>{i.style.color='';});
+}
+function toggleSettingsPanel(){
+    const p=document.getElementById('settingsPopup'),g=document.getElementById('gearBtn');
+    p.classList.toggle('open');g.classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+    const panel=document.getElementById('settingsPanel');
+    if(!panel.contains(e.target)){document.getElementById('settingsPopup').classList.remove('open');document.getElementById('gearBtn').classList.remove('open');}
+});
+
+function init(){
+    applyThemeUI();applyRainbowUI();
+    const m=monthInput.value,prev=new Date(m+'-01');prev.setMonth(prev.getMonth()-1);
+    const pk=prev.toISOString().substring(0,7),data=db[m];
+    document.getElementById('tableBody').innerHTML='';
+    const parts=m.split('-');
+    document.getElementById('displayMonthTag').innerText='THÁNG '+parts[1]+'/'+parts[0];
+    document.getElementById('titleMonth').innerText='SỔ QUẢN LÝ MUA BÁN ĐIỆN - THÁNG '+parts[1]+'/'+parts[0];
+    if(data?.rows)data.rows.forEach(r=>addRow(r));
+    else if(db[pk]?.rows)db[pk].rows.forEach(o=>addRow({name:o.name,before:o.after,after:0,price:o.price,img:''}));
+    else addRow();
+    document.getElementById('tongDHThang').value=data?.tongDH||0;
+    document.getElementById('footerMonthLabel').value=data?.footerMonthLabel||parts[1];
+    const oldMi=document.getElementById('mainMeterImg');if(oldMi)oldMi.remove();
+    document.getElementById('deleteMainImgBtn').style.display='none';
+    if(data?.mainMeterImg&&data.mainMeterImg.includes('data:image')){
+        const mi=document.createElement('img');
+        mi.id='mainMeterImg';mi.src=data.mainMeterImg;
+        mi.className='has-img';
+        mi.style.cssText='width:44px;height:44px;object-fit:cover;border-radius:8px;border:2px solid var(--border-color);cursor:pointer';
+        mi.onclick=()=>openImg(mi.src);
+        mi.onerror=()=>{mi.remove();document.getElementById('deleteMainImgBtn').style.display='none';};
+        const container=document.getElementById('uploadMainBtn').parentElement;
+        container.insertBefore(mi,container.firstChild);
+        document.getElementById('deleteMainImgBtn').style.display='inline-block';
+    }
+    applyLockUI(data?.locked||false);updateTotals();
+}
+
+function addRow(data={name:'',before:0,after:0,price:2400,img:''}){
+    const hasImg=data.img&&data.img.includes('data:image');
+    const row=document.getElementById('tableBody').insertRow();
+    row.className='data-row';
+    const imgHTML=hasImg?`<img src="${data.img}" class="img-preview has-img" onclick="openImg(this.src)" onerror="this.classList.remove('has-img');this.style.display='none';this.nextElementSibling.nextElementSibling.style.display='none'">`:'';
+    row.innerHTML=`
+        <td class="col-stt" onclick="handleRowAction(this)"><span class="stt-num">1</span></td>
+        <td class="col-name"><input type="text" value="${(data.name||'').replace(/"/g,'&quot;')}" placeholder="Tên hộ..." style="text-align:center"></td>
+        <td class="col-img"><div class="img-container">
+            ${imgHTML}
+            <span class="upload-btn" onclick="this.parentElement.querySelector('input[type=file]').click()">Up Ảnh</span>
+            <span class="upload-btn delete-img-btn" style="display:${hasImg?'inline-block':'none'};background:rgba(220,53,69,.15);color:#ff6b6b;border-color:rgba(220,53,69,.4)" onclick="clearRowImg(this)">🗑 Xóa</span>
+            <input type="file" accept="image/*" onchange="previewImg(this)">
+        </div></td>
+        <td><input type="number" class="before" value="${data.before||0}" oninput="updateTotals()"></td>
+        <td><input type="number" class="after" value="${data.after||0}" oninput="updateTotals()"></td>
+        <td class="col-kwh"><input type="number" class="usage" readonly></td>
+        <td><input type="number" class="price" value="${data.price||2400}" oninput="updateTotals()"></td>
+        <td style="text-align:center"><span class="base-money">0</span></td>
+        <td style="text-align:center"><span class="loss-share">0</span></td>
+        <td class="col-final" style="text-align:center"><span class="final-total">0đ</span></td>`;
+}
+
+function showToast(msg,type='success'){
+    let tc=document.getElementById('toast-container');
+    if(!tc){tc=document.createElement('div');tc.id='toast-container';tc.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none';document.body.appendChild(tc);}
+    const t=document.createElement('div');
+    const bg=type==='error'?'linear-gradient(135deg,#a0000a,#dc3545)':type==='warn'?'linear-gradient(135deg,#a06000,#fd7e14)':'linear-gradient(135deg,#0a6a2a,#28a745)';
+    t.style.cssText=`background:${bg};color:white;padding:11px 22px;border-radius:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:1;transition:opacity .4s`;
+    t.innerText=msg;tc.appendChild(t);
+    setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),400);},3000);
+}
+
+function previewImg(input,tid){
+    if(!input.files||!input.files[0])return;
+    const reader=new FileReader();
+    reader.onload=e=>{
+        const img=new Image();
+        img.onload=()=>{
+            const c=document.createElement('canvas'),ctx=c.getContext('2d'),mw=400;
+            c.width=mw;c.height=img.height*(mw/img.width);ctx.drawImage(img,0,0,c.width,c.height);
+            const b64=c.toDataURL('image/jpeg',.7);
+            if(tid){
+                let t=document.getElementById(tid);
+                if(!t){
+                    t=document.createElement('img');t.id=tid;t.className='has-img';
+                    t.style.cssText='width:44px;height:44px;object-fit:cover;border-radius:8px;border:2px solid var(--border-color);cursor:pointer';
+                    t.onclick=()=>openImg(t.src);
+                    t.onerror=()=>{t.remove();document.getElementById('deleteMainImgBtn').style.display='none';};
+                    const container=document.getElementById('uploadMainBtn').parentElement;
+                    container.insertBefore(t,container.firstChild);
+                }
+                t.src=b64;t.style.display='block';
+                const d=document.getElementById('deleteMainImgBtn');if(d)d.style.display='inline-block';
+            } else {
+                const container=input.parentElement;
+                let el=container.querySelector('.img-preview');
+                if(!el){
+                    el=document.createElement('img');el.className='img-preview has-img';
+                    el.style.cssText='width:44px;height:44px;object-fit:cover;border-radius:8px;border:2px solid var(--border-color);cursor:pointer';
+                    el.onclick=()=>openImg(el.src);
+                    el.onerror=()=>{el.classList.remove('has-img');el.style.display='none';};
+                    container.insertBefore(el,container.firstChild);
+                } else {el.classList.add('has-img');}
+                el.src=b64;el.style.display='block';
+                const d=container.querySelector('.delete-img-btn');if(d)d.style.display='inline-block';
+            }
+            input.value='';
+        };img.src=e.target.result;
+    };reader.readAsDataURL(input.files[0]);
+}
+
+function clearRowImg(btn){
+    const c=btn.parentElement;
+    c.querySelectorAll('.img-preview').forEach(i=>{i.classList.remove('has-img');i.src='';i.style.display='none';});
+    const f=c.querySelector('input[type="file"]');if(f)f.value='';
+    btn.style.display='none';
+}
+function clearMainImg(){
+    const i=document.getElementById('mainMeterImg');if(i)i.remove();
+    const f=document.getElementById('fileMain');if(f)f.value='';
+    const d=document.getElementById('deleteMainImgBtn');if(d)d.style.display='none';
+}
+
+function updateTotals(){
+    let tkwh=0,tmoney=0;
+    document.querySelectorAll('.data-row').forEach((row,i)=>{
+        const stt=row.cells[0].querySelector('.stt-num');if(stt)stt.innerText=i+1;
+        const b=parseFloat(row.querySelector('.before').value)||0,a=parseFloat(row.querySelector('.after').value)||0,p=parseFloat(row.querySelector('.price').value)||0;
+        const u=Math.max(0,a-b),m=u*p;
+        row.querySelector('.usage').value=u;row.querySelector('.base-money').innerText=Math.round(m).toLocaleString('vi-VN');
+        row.dataset.u=u;row.dataset.m=m;tkwh+=u;tmoney+=m;
+    });
+    const curT=parseFloat(document.getElementById('tongDHThang').value)||0;
+    const pk=new Date(monthInput.value+'-01');pk.setMonth(pk.getMonth()-1);
+    const prevT=db[pk.toISOString().substring(0,7)]?.tongDH||0;
+    const mCons=Math.max(0,curT-prevT),lKwh=Math.max(0,mCons-tkwh),lMoney=lKwh*2400;
+    document.querySelectorAll('.data-row').forEach(row=>{
+        const u=parseFloat(row.dataset.u)||0,m=parseFloat(row.dataset.m)||0,s=tkwh>0?(u/tkwh)*lMoney:0;
+        row.querySelector('.loss-share').innerText=Math.round(s).toLocaleString('vi-VN');
+        row.querySelector('.final-total').innerText=(Math.round((m+s)/1000)*1000).toLocaleString('vi-VN')+'đ';
+    });
+    document.getElementById('lblTotalKwh').innerText=tkwh;
+    document.getElementById('lblMainConsumption').innerText=mCons;
+    document.getElementById('lblLossKwh').innerText=lKwh;
+    document.getElementById('lblTotalBaseMoney').innerText=Math.round(tmoney).toLocaleString('vi-VN');
+    document.getElementById('lblLossMoney').innerText=Math.round(lMoney).toLocaleString('vi-VN');
+    document.getElementById('lblGrandTotal').innerText=Math.round(tmoney+lMoney).toLocaleString('vi-VN')+'đ';
+}
+
+async function exportToPNG(){
+    const area=document.getElementById('captureArea'),ctrl=document.getElementById('controlsBar'),sw=document.getElementById('tableScrollWrapper'),hdr=document.getElementById('displayHeader'),expRow=document.querySelector('.export-title-row');
+    const imgCells=Array.from(document.querySelectorAll('#mainTable .col-img'));
+    const imgCellData=imgCells.map(cell=>({cell,parent:cell.parentNode,nextSibling:cell.nextSibling}));
+    imgCells.forEach(cell=>cell.remove());
+    const colgroup=document.querySelector('#mainTable colgroup'),allCols=Array.from(colgroup.children),imgCol=allCols[2];imgCol.remove();
+    const cw=[44,210,115,115,115,120,125,155,151];
+    Array.from(colgroup.children).forEach((col,i)=>{col._ow=col.style.width;col.style.width=cw[i]+'px';});
+    area.classList.add('is-capturing');ctrl.classList.add('hide-for-capture');if(hdr)hdr.classList.add('hide-for-capture');
+    const mainImgSection=document.querySelector('.footer-kwh-row > div');
+    if(mainImgSection)mainImgSection.classList.add('hide-for-capture');
+    expRow.style.display='table-row';sw.style.overflow='visible';area.style.overflow='visible';area.style.borderRadius='0';
+    const wrapper=document.getElementById('rainbowWrapper'),woo=wrapper.style.overflow;wrapper.style.overflow='visible';wrapper.classList.add('is-capturing');
+    document.getElementById('titleMonth').colSpan=9;document.getElementById('footerMain').colSpan=9;
+    document.getElementById('f_col1').colSpan=3;document.getElementById('f_col2').colSpan=3;document.getElementById('f_col3').colSpan=3;
+    document.getElementById('f_col4').colSpan=4;document.getElementById('f_col5').colSpan=5;document.getElementById('f_col6').colSpan=9;
+    window.scrollTo(0,0);
+    const allImgs=area.querySelectorAll('img'),origSrc=[];
+    await Promise.all(Array.from(allImgs).map((img,i)=>new Promise(resolve=>{
+        origSrc[i]=img.src;
+        if(!img.src||!img.src.startsWith('http')||img.style.display==='none')return resolve();
+        const cv=document.createElement('canvas');cv.width=img.naturalWidth||img.width||80;cv.height=img.naturalHeight||img.height||80;
+        const cx=cv.getContext('2d'),im=new Image();im.crossOrigin='anonymous';
+        im.onload=()=>{cx.drawImage(im,0,0);try{img.src=cv.toDataURL('image/jpeg',.9);}catch(e){}resolve();};
+        im.onerror=()=>resolve();im.src=img.src;
+    })));
+    try{
+        const canvas=await html2canvas(area,{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#ffffff',width:1280,windowWidth:1400});
+        const link=document.createElement('a');link.download=`EVN_Pro_${monthInput.value}.png`;link.href=canvas.toDataURL('image/png');link.click();
+    }catch(err){showToast('❌ Lỗi xuất ảnh: '+err.message,'error');}
+    finally{
+        area.querySelectorAll('img').forEach((img,i)=>{if(origSrc[i])img.src=origSrc[i];});
+        area.classList.remove('is-capturing');ctrl.classList.remove('hide-for-capture');if(hdr)hdr.classList.remove('hide-for-capture');
+        if(mainImgSection)mainImgSection.classList.remove('hide-for-capture');
+        expRow.style.display='none';sw.style.overflow='auto';area.style.overflow='';area.style.borderRadius='';
+        wrapper.style.overflow=woo;wrapper.classList.remove('is-capturing');
+        Array.from(colgroup.children).forEach(col=>{col.style.width=col._ow||'';});
+        const refCol=colgroup.children[2];colgroup.insertBefore(imgCol,refCol||null);
+        imgCellData.forEach(({cell,parent,nextSibling})=>{parent.insertBefore(cell,nextSibling);});
+        document.getElementById('titleMonth').colSpan=10;document.getElementById('footerMain').colSpan=10;
+        document.getElementById('f_col1').colSpan=4;document.getElementById('f_col2').colSpan=3;document.getElementById('f_col3').colSpan=3;
+        document.getElementById('f_col4').colSpan=5;document.getElementById('f_col5').colSpan=5;document.getElementById('f_col6').colSpan=10;
+    }
+}
+
+function saveToLocal(silent){
+    const rows=[];
+    document.querySelectorAll('.data-row').forEach(row=>{
+        const imgEl=row.querySelector('.img-preview');
+        const imgSrc=(imgEl&&imgEl.src&&imgEl.src.includes('data:image'))?imgEl.src:'';
+        rows.push({name:row.querySelector('.col-name input').value,img:imgSrc,before:row.querySelector('.before').value,after:row.querySelector('.after').value,price:row.querySelector('.price').value});
+    });
+    const m=monthInput.value;
+    const mainImgEl=document.getElementById('mainMeterImg');
+    const mainImgSrc=(mainImgEl&&mainImgEl.src&&mainImgEl.src.includes('data:image'))?mainImgEl.src:'';
+    db[m]={rows,tongDH:document.getElementById('tongDHThang').value,footerMonthLabel:document.getElementById('footerMonthLabel').value,mainMeterImg:mainImgSrc,locked:db[m]?.locked||false};
+    try{localStorage.setItem('electricDB_vPhoto',JSON.stringify(db));if(!silent)showSavePopup();}
+    catch(e){showToast('⚠️ Bộ nhớ đầy! Hãy xóa bớt ảnh hoặc backup.','error');}
+}
+
+function toggleLock(){
+    const m=monthInput.value;if(!db[m])saveToLocal(true);
+    db[m].locked=!db[m].locked;
+    try{localStorage.setItem('electricDB_vPhoto',JSON.stringify(db));}
+    catch(e){showToast('⚠️ Không thể lưu trạng thái khóa!','error');}
+    init();
+}
+function applyLockUI(isLocked){
+    const allInputs=document.querySelectorAll('input:not(#currentMonth):not(#importFile):not([type="file"])');
+    const upBtns=document.querySelectorAll('.upload-btn:not(.delete-img-btn):not(#deleteMainImgBtn):not(#uploadMainBtn)');
+    const delBtns=document.querySelectorAll('.upload-btn.delete-img-btn,#deleteMainImgBtn');
+    if(isLocked){
+        document.getElementById('lockBtnText').innerText='🔓 Mở Khóa';
+        document.getElementById('statusArea').innerHTML='<span class="status-badge status-locked">🔒 ĐÃ KHÓA</span>';
+        allInputs.forEach(i=>i.disabled=true);
+        upBtns.forEach(b=>b.style.display='none');
+        delBtns.forEach(b=>b.style.display='none');
+        const ubL=document.getElementById('uploadMainBtn');if(ubL)ubL.style.display='none';
+    }else{
+        document.getElementById('lockBtnText').innerText='🔒 Khóa tháng';
+        document.getElementById('statusArea').innerHTML='<span class="status-badge status-open">✅ ĐANG MỞ</span>';
+        allInputs.forEach(i=>i.disabled=false);
+        upBtns.forEach(b=>b.style.display='inline-block');
+        const ub=document.getElementById('uploadMainBtn');if(ub)ub.style.display='inline-block';
+        document.querySelectorAll('.upload-btn.delete-img-btn').forEach(b=>{
+            const img=b.parentElement.querySelector('.img-preview');
+            b.style.display=(img&&img.src&&img.src.includes('data:image'))?'inline-block':'none';
+        });
+        const mainImg=document.getElementById('mainMeterImg');
+        const delMain=document.getElementById('deleteMainImgBtn');
+        if(delMain)delMain.style.display=(mainImg&&mainImg.src&&mainImg.src.includes('data:image'))?'inline-block':'none';
+    }
+}
+
+function toggleDeleteMode(){
+    const btn=document.getElementById('deleteModeBtn');
+    btn.classList.toggle('active');document.getElementById('captureArea').classList.toggle('delete-active');
+    const on=btn.classList.contains('active');
+    btn.innerText=on?'❌ Bấm STT để xóa':'🗑 Chế Độ Xóa';
+    btn.style.background=on?'linear-gradient(135deg,#a0000a,#dc3545)':'linear-gradient(135deg,#4a5568,#6c757d)';
+}
+
+let _pendingDeleteRow=null;
+function handleRowAction(cell){
+    if(document.getElementById('captureArea').classList.contains('delete-active')){
+        _pendingDeleteRow=cell.parentElement;
+        const name=cell.parentElement.querySelector('.col-name input')?.value||'Tên hộ chưa đặt';
+        document.getElementById('deleteModalName').innerText='👤 '+name;
+        document.getElementById('deleteModal').style.display='flex';
+    }
+}
+function confirmDeleteYes(){if(_pendingDeleteRow){_pendingDeleteRow.remove();updateTotals();_pendingDeleteRow=null;}document.getElementById('deleteModal').style.display='none';}
+function confirmDeleteNo(){_pendingDeleteRow=null;document.getElementById('deleteModal').style.display='none';}
+function openImg(s){if(s&&s.includes('data:image')){document.getElementById('modalImg').src=s;document.getElementById('imgModal').style.display='flex';}}
+function changeMonth(){init();}
+
+function exportData(){
+    saveToLocal(true);
+    const b=new Blob([JSON.stringify(db)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='backup_dien.json';a.click();
+}
+function importData(e){
+    const file=e.target.files[0];if(!file)return;
+    const r=new FileReader();
+    r.onload=ev=>{try{db=JSON.parse(ev.target.result);localStorage.setItem('electricDB_vPhoto',JSON.stringify(db));init();showToast('✅ Nhập dữ liệu thành công!');}catch(err){showToast('❌ File không hợp lệ!','error');}};
+    r.onerror=()=>showToast('❌ Không đọc được file!','error');
+    r.readAsText(file);e.target.value='';
+}
+
+init();
+</script>
+</body>
+</html>
