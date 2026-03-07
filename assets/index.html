@@ -672,7 +672,14 @@ async function exportToPNG(){
     })));
     try{
         const canvas=await html2canvas(area,{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#ffffff',width:1280,windowWidth:1400});
-        const link=document.createElement('a');link.download=`EVN_Pro_${monthInput.value}.png`;link.href=canvas.toDataURL('image/png');link.click();
+        const pngData=canvas.toDataURL('image/png');
+        const pngFilename='EVN_Pro_'+monthInput.value+'.png';
+        // iOS Flutter bridge
+        if(window.flutter_inappwebview){
+            window.flutter_inappwebview.callHandler('saveImage', pngData, pngFilename);
+        } else {
+            const link=document.createElement('a');link.download=pngFilename;link.href=pngData;link.click();
+        }
     }catch(err){showToast('❌ Lỗi xuất ảnh: '+err.message,'error');}
     finally{
         area.querySelectorAll('img').forEach((img,i)=>{if(origSrc[i])img.src=origSrc[i];});
@@ -762,8 +769,17 @@ function changeMonth(){init();}
 
 function exportData(){
     saveToLocal(true);
-    const b=new Blob([JSON.stringify(db)],{type:'application/json'});
-    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='backup_dien.json';a.click();
+    const json=JSON.stringify(db);
+    const m=monthInput.value;
+    const filename='backup_dien_'+m+'.json';
+    // iOS Flutter bridge
+    if(window.flutter_inappwebview){
+        window.flutter_inappwebview.callHandler('shareFile', json, filename);
+    } else {
+        // Fallback browser
+        const b=new Blob([json],{type:'application/json'});
+        const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename;a.click();
+    }
 }
 function importData(e){
     const file=e.target.files[0];if(!file)return;
