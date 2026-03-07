@@ -27,6 +27,7 @@ class WebViewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebViewPage> {
+  InAppWebViewController? _webViewController;
   bool _loading = true;
 
   @override
@@ -44,8 +45,33 @@ class _WebViewPageState extends State<WebViewPage> {
                 databaseEnabled: true,
                 allowFileAccessFromFileURLs: true,
                 allowUniversalAccessFromFileURLs: true,
+                // Cho phép upload file & ảnh
+                allowsInlineMediaPlayback: true,
+                mediaPlaybackRequiresUserGesture: false,
+                useOnDownloadStart: true,
+                // iOS specific
+                allowsPictureInPictureMediaPlayback: true,
+                isFraudulentWebsiteWarningEnabled: false,
               ),
+              onWebViewCreated: (controller) {
+                _webViewController = controller;
+              },
               onLoadStop: (c, u) => setState(() => _loading = false),
+
+              // Xử lý download file (xuất backup)
+              onDownloadStartRequest: (controller, request) async {
+                // Mở file trong Safari để download
+                await SystemChannels.platform.invokeMethod(
+                  'url_launcher/launch',
+                  request.url.toString(),
+                );
+              },
+
+              // Xử lý file picker (chọn ảnh)
+              onShowFileChooser: (controller, params) async {
+                // Trả về null để iOS tự xử lý file picker native
+                return [];
+              },
             ),
             if (_loading)
               const ColoredBox(
@@ -56,7 +82,11 @@ class _WebViewPageState extends State<WebViewPage> {
                     children: [
                       CircularProgressIndicator(color: Colors.white),
                       SizedBox(height: 16),
-                      Text('EVN Pro', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                      Text('EVN Pro',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
