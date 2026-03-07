@@ -11,6 +11,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
@@ -314,6 +315,7 @@
             <button class="btn" id="deleteModeBtn" onclick="toggleDeleteMode()" style="background:linear-gradient(135deg,#4a5568,#6c757d);color:white">🗑 Chế Độ Xóa</button>
             <button class="btn" onclick="saveToLocal()" style="background:linear-gradient(135deg,#0056b3,#007bff);color:white">💾 Lưu Dữ liệu</button>
             <button class="btn" style="background:linear-gradient(135deg,#a0186d,#d63384);color:white" onclick="exportToPNG()">📸 Xuất Ảnh Nè</button>
+            <button class="btn" style="background:linear-gradient(135deg,#1a5cb8,#2980b9);color:white" onclick="exportToWord()">📄 Xuất Word</button>
         </div>
     </div>
     <div id="tableScrollWrapper">
@@ -788,6 +790,164 @@ function importData(e){
     r.onerror=()=>showToast('❌ Không đọc được file!','error');
     r.readAsText(file);e.target.value='';
 }
+
+async function exportToWord(){
+    try {
+        const { Document, Packer, Paragraph, Table, TableRow, TableCell, TextRun, AlignmentType, WidthType, BorderStyle, HeadingLevel, ShadingType } = docx;
+        const m = monthInput.value, parts = m.split('-');
+        const monthLabel = 'THÁNG ' + parts[1] + '/' + parts[0];
+
+        // Thu thập dữ liệu từ bảng
+        const rows = [];
+        document.querySelectorAll('.data-row').forEach((row, i) => {
+            rows.push({
+                stt: i + 1,
+                name: row.querySelector('.col-name input').value || '',
+                before: row.querySelector('.before').value || '0',
+                after: row.querySelector('.after').value || '0',
+                usage: row.querySelector('.usage').value || '0',
+                price: row.querySelector('.price').value || '0',
+                baseMoney: row.querySelector('.base-money').innerText || '0',
+                lossShare: row.querySelector('.loss-share').innerText || '0',
+                finalTotal: row.querySelector('.final-total').innerText || '0đ',
+            });
+        });
+
+        const totalKwh = document.getElementById('lblTotalKwh').innerText;
+        const mainCons = document.getElementById('lblMainConsumption').innerText;
+        const lossKwh = document.getElementById('lblLossKwh').innerText;
+        const totalBase = document.getElementById('lblTotalBaseMoney').innerText;
+        const lossMoney = document.getElementById('lblLossMoney').innerText;
+        const grandTotal = document.getElementById('lblGrandTotal').innerText;
+
+        // Style chung
+        const headerShading = { type: ShadingType.CLEAR, color: 'auto', fill: 'DBEAFE' };
+        const cellBorder = {
+            top: { style: BorderStyle.SINGLE, size: 6, color: 'AAC4E0' },
+            bottom: { style: BorderStyle.SINGLE, size: 6, color: 'AAC4E0' },
+            left: { style: BorderStyle.SINGLE, size: 6, color: 'AAC4E0' },
+            right: { style: BorderStyle.SINGLE, size: 6, color: 'AAC4E0' },
+        };
+        const makeCell = (text, opts = {}) => new TableCell({
+            borders: cellBorder,
+            shading: opts.shading || undefined,
+            width: opts.width ? { size: opts.width, type: WidthType.DXA } : undefined,
+            children: [new Paragraph({
+                alignment: opts.align || AlignmentType.CENTER,
+                children: [new TextRun({
+                    text: String(text),
+                    bold: opts.bold || false,
+                    size: opts.size || 18,
+                    color: opts.color || '000000',
+                    font: 'Times New Roman',
+                })]
+            })]
+        });
+
+        // Hàng header
+        const headers = ['STT','Tên hộ','SĐ tháng trước','SĐ tháng này','Số kí (kWh)','Giá điện (đ)','Tiền điện (đ)','Thất thoát (đ)','TIỀN PHẢI NỘP'];
+        const colWidths = [500, 2000, 1200, 1200, 1000, 1100, 1200, 1300, 1500];
+        const headerRow = new TableRow({
+            children: headers.map((h, i) => makeCell(h, { bold: true, shading: headerShading, width: colWidths[i], size: 18 }))
+        });
+
+        // Hàng dữ liệu
+        const dataRows = rows.map(r => new TableRow({
+            children: [
+                makeCell(r.stt, { width: colWidths[0] }),
+                makeCell(r.name, { align: AlignmentType.LEFT, width: colWidths[1] }),
+                makeCell(r.before, { width: colWidths[2] }),
+                makeCell(r.after, { width: colWidths[3] }),
+                makeCell(r.usage, { width: colWidths[4] }),
+                makeCell(Number(r.price).toLocaleString('vi-VN'), { width: colWidths[5] }),
+                makeCell(r.baseMoney, { width: colWidths[6] }),
+                makeCell(r.lossShare, { width: colWidths[7] }),
+                makeCell(r.finalTotal, { bold: true, color: 'CC0000', width: colWidths[8] }),
+            ]
+        }));
+
+        // Hàng tổng kết
+        const summaryShading = { type: ShadingType.CLEAR, color: 'auto', fill: 'FFF8F8' };
+        const summaryRows = [
+            new TableRow({ children: [
+                makeCell('⚡ Tổng kí các hộ: ' + totalKwh + ' kWh', { shading: summaryShading, bold: true }),
+                makeCell('🔌 Tổng tiêu thụ: ' + mainCons + ' kWh', { shading: summaryShading, bold: true }),
+                makeCell('⚠️ Thất thoát: ' + lossKwh + ' kWh', { shading: summaryShading, bold: true, color: 'CC0000' }),
+                ...Array(6).fill(makeCell('', { shading: summaryShading }))
+            ]}),
+            new TableRow({ children: [
+                makeCell('💰 Tổng tiền điện: ' + totalBase + 'đ', { shading: summaryShading, bold: true }),
+                makeCell('💸 Tiền thất thoát: ' + lossMoney + 'đ', { shading: summaryShading, bold: true }),
+                ...Array(7).fill(makeCell('', { shading: summaryShading }))
+            ]}),
+            new TableRow({ children: [
+                makeCell('🏆 TỔNG TIỀN PHẢI NỘP: ' + grandTotal, {
+                    shading: { type: ShadingType.CLEAR, color: 'auto', fill: 'FFE0E0' },
+                    bold: true, color: 'CC0000', size: 22
+                }),
+                ...Array(8).fill(makeCell('', { shading: { type: ShadingType.CLEAR, color: 'auto', fill: 'FFE0E0' } }))
+            ]}),
+        ];
+
+        const table = new Table({
+            width: { size: 100, type: WidthType.PERCENTAGE },
+            rows: [headerRow, ...dataRows, ...summaryRows],
+        });
+
+        const doc = new Document({
+            sections: [{
+                properties: { page: { margin: { top: 720, bottom: 720, left: 900, right: 900 } } },
+                children: [
+                    new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [new TextRun({ text: 'SỔ QUẢN LÝ MUA BÁN ĐIỆN', bold: true, size: 32, font: 'Times New Roman', color: '0054A5' })]
+                    }),
+                    new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [new TextRun({ text: monthLabel, bold: true, size: 26, font: 'Times New Roman', color: '0054A5' })]
+                    }),
+                    new Paragraph({ children: [new TextRun({ text: '' })] }),
+                    table,
+                    new Paragraph({ children: [new TextRun({ text: '' })] }),
+                    new Paragraph({
+                        alignment: AlignmentType.LEFT,
+                        children: [new TextRun({ text: '📋 Ghi chú cách tính:', bold: true, size: 20, font: 'Times New Roman' })]
+                    }),
+                    ...[
+                        '• Số kí tiêu thụ (kWh): Số ĐH tháng này trừ Số ĐH tháng trước.',
+                        '• Tiền điện: Số kí tiêu thụ × Giá điện (2.400đ).',
+                        '• TIỀN PHẢI NỘP: Tiền điện + Tiền điện thất thoát.',
+                        '• Số kí điện thất thoát: Điện tổng tiêu thụ trừ tổng điện các hộ dùng.',
+                        '• Tiền điện thất thoát: Chia theo tỉ lệ số kí tiêu thụ từng hộ.',
+                    ].map(note => new Paragraph({
+                        children: [new TextRun({ text: note, size: 18, font: 'Times New Roman', italics: true })]
+                    })),
+                ]
+            }]
+        });
+
+        const blob = await Packer.toBlob(doc);
+        const filename = 'EVN_Pro_' + m + '.docx';
+
+        // iOS Flutter bridge
+        if (window.flutter_inappwebview) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64 = e.target.result;
+                window.flutter_inappwebview.callHandler('saveImage', base64, filename);
+            };
+            reader.readAsDataURL(blob);
+        } else {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = filename; a.click();
+        }
+    } catch(err) {
+        showToast('❌ Lỗi xuất Word: ' + err.message, 'error');
+        console.error(err);
+    }
+}
+
 
 init();
 </script>
