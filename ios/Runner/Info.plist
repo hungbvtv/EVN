@@ -16,6 +16,19 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key><true/>
 	</dict>
+	<!-- Camera & Photo permissions -->
+	<key>NSCameraUsageDescription</key>
+	<string>EVN Pro cần truy cập camera để chụp ảnh</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>EVN Pro cần truy cập thư viện ảnh</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>EVN Pro cần lưu ảnh vào thư viện</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>EVN Pro cần truy cập microphone</string>
+	<!-- File access -->
+	<key>UIFileSharingEnabled</key><true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key><true/>
+	<key>UISupportsDocumentBrowser</key><true/>
 	<key>UILaunchStoryboardName</key><string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key><string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
